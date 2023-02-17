@@ -186,7 +186,7 @@ coffeescript:
         Test.it "Should return something that isn't falsy", ->
           Test.expect results1, "Something is wrong, twoOldestAges([1,5,87,45,8,8]) has no results!"
         Test.it "Should return [45,87]", ->
-          Test.assertEquals results1[0] == 45, "twoOldestAges([1,5,87,45,8,8]) should return 45 as the second highest result"
+          Test.assertEquals results1[0], 45, "twoOldestAges([1,5,87,45,8,8]) should return 45 as the second highest result"
           Test.assertEquals results1[1], 87, "twoOldestAges([1,5,87,45,8,8]) should return 87 as the second highest result"
 
       Test.describe "twoOldestAges([6,5,83,5,3,18])", ->
