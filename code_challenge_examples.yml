@@ -1,0 +1,2678 @@
+csharp:
+  default: 'algorithms'
+  algorithms:
+    setup: |-
+      namespace Bank {
+        using System;
+        public class Account
+        {
+          private decimal balance;
+          public void Deposit(decimal amount)
+          {
+          }
+
+          public void Withdraw(decimal amount)
+          {
+          }
+
+          public void TransferFunds(Account destination, decimal amount)
+          {
+          }
+
+          public decimal Balance { get { return balance; } }
+        }
+      }
+
+    answer: |-
+      namespace Bank {
+        using System;
+        public class Account
+        {
+          private decimal balance;
+          public void Deposit(decimal amount)
+          {
+            balance += amount;
+          }
+
+          public void Withdraw(decimal amount)
+          {
+            balance -= amount;
+          }
+
+          public void TransferFunds(Account destination, decimal amount)
+          {
+            destination.Deposit(amount);
+            this.Withdraw(amount);
+          }
+
+          public decimal Balance { get { return balance; } }
+        }
+      }
+
+    fixture: |-
+      namespace Bank {
+        using NUnit.Framework;
+        using System;
+        [TestFixture]
+        public class AccountTest
+        {
+          [Test]
+          public void TransferFunds()
+          {
+            Account source = new Account();
+            source.Deposit(200m);
+            Account destination = new Account();
+            destination.Deposit(150m);
+            source.TransferFunds(destination, 100m);
+            Assert.AreEqual(250m, destination.Balance);
+            Assert.AreEqual(100m, source.Balance);
+          }
+
+          [Test]
+          public void CheckFunds()
+          {
+            Account source = new Account();
+            source.Deposit(200m);
+            Account destination = new Account();
+            destination.Deposit(150m);
+            Assert.AreEqual(200m, source.Balance);
+          }
+        }
+      }
+
+javascript:
+  default: "algorithms"
+
+  algorithms:
+    setup: |-
+      // return the two oldest/oldest ages within the array of ages passed in.
+      // it should return the two ages as a sorted array, youngest age first
+      function twoOldestAges(ages){
+
+      }
+
+    answer: |-
+      function twoOldestAges(ages){
+        var oldest = 0, nextOldest;
+        for(var i = 0;i < ages.length;i++){
+          var age = ages[i];
+          if (age > oldest){
+            nextOldest = oldest;
+            oldest = age;
+          }
+          else if(age > nextOldest){
+            nextOldest = age;
+      	  }
+        }
+        return [nextOldest, oldest];
+      }
+
+    fixture: |-
+      const chai = require("chai");
+      const assert = chai.assert;
+      chai.config.truncateThreshold = 0;
+
+      describe("twoOldestAges", function() {
+        it("given [1,5,87,45,8,8]", function() {
+          assert.deepEqual(twoOldestAges([1, 5, 87, 45, 8, 8]), [45, 87]);
+        });
+
+        it("given [6,5,83,5,3,18]", function() {
+          assert.deepEqual(twoOldestAges([6, 5, 83, 5, 3, 18]), [18, 83]);
+        });
+      });
+
+  bug fixes:
+    setup: |-
+      function Person(name) {
+        this.name = name;
+      }
+
+      // TODO: The greet function is not returning the expected value.
+      Person.prototype.greet = function() {
+        return "Hello my name is " + name;
+      };
+
+    answer: |-
+      function Person(name) {
+        this.name = name;
+      }
+
+      Person.prototype.greet = function() {
+        return "Hello my name is " + this.name;
+      };
+
+    fixture: |-
+      const assert = require("chai").assert;
+
+      var jack = new Person("Jack");
+      var jill = new Person("Jill");
+      describe("Person", function() {
+        it(".name", function() {
+          assert.strictEqual(jack.name, "Jack", "person.name does not have a valid value");
+        });
+
+        it(".greet", function() {
+          assert.strictEqual(typeof jack.greet, "function", "greet method does not exist on the Person instance");
+          assert.strictEqual(jack.greet(), "Hello my name is Jack");
+          assert.strictEqual(jill.greet(), "Hello my name is Jill");
+        });
+      });
+
+coffeescript:
+  default: "algorithms"
+
+  algorithms:
+    setup: |-
+      # return the two oldest/oldest ages within the array of ages passed in.
+      # it should return the two ages as a sorted array, youngest age first
+      twoOldestAges = (ages) ->
+
+    answer: |-
+      twoOldestAges = (ages) ->
+        oldest = 0
+        nextOldest = 0;
+        for age in ages
+          if age > oldest
+            nextOldest = oldest
+            oldest = age
+          else if age > nextOldest
+            nextOldest = age
+        [nextOldest, oldest]
+
+    fixture: |-
+      Test.describe "twoOldestAges([1,5,87,45,8,8])", ->
+        results1 = twoOldestAges [1,5,87,45,8,8]
+        Test.it "Should return something that isn't falsy", ->
+          Test.expect results1, "Something is wrong, twoOldestAges([1,5,87,45,8,8]) has no results!"
+        Test.it "Should return [45,87]", ->
+          Test.assertEquals results1[0] == 45, "twoOldestAges([1,5,87,45,8,8]) should return 45 as the second highest result"
+          Test.assertEquals results1[1], 87, "twoOldestAges([1,5,87,45,8,8]) should return 87 as the second highest result"
+
+      Test.describe "twoOldestAges([6,5,83,5,3,18])", ->
+        results2 = twoOldestAges [6,5,83,5,3,18]
+        Test.assertSimilar results2, [18, 83]
+
+ruby:
+  default: "algorithms"
+  algorithms:
+    setup: |-
+      # return the two oldest/oldest ages within the array of ages passed in.
+      # it should return the two ages as a sorted array, youngest age first
+      def two_oldest_ages(ages)
+        []
+      end
+
+    answer: |-
+      def two_oldest_ages(ages)
+        oldest = 0
+        next_oldest = 0;
+        ages.each do |age|
+          if age > oldest
+            next_oldest = oldest
+            oldest = age
+          elsif age > next_oldest
+            next_oldest = age
+          end
+        end
+        [next_oldest, oldest]
+      end
+
+    fixture: |-
+      # From Ruby 3.0, RSpec is used under the hood. See https://rspec.info/
+      # Defaults to the global `describe` for backwards compatibility, but `RSpec.desribe` works as well.
+      describe "two_oldest_ages" do
+        it "returns the two oldest ages" do
+          # From Ruby 3.0, we're using RSpec under the hood.
+          expect(two_oldest_ages([1,5,87,45,8,8])).to eq([45,87])
+          expect(two_oldest_ages([6,5,83,5,3,18])).to eq([18,83])
+          # You'll see the following in the existing kata, but shouldn't be used for new ones.
+          # Test.assert_equals(two_oldest_ages([1,5,87,45,8,8]), [45,87])
+          # Test.assert_equals(two_oldest_ages([6,5,83,5,3,18]), [18,83])
+        end
+      end
+
+python:
+  default: "algorithms"
+
+  algorithms:
+    setup: |-
+      # return the two oldest ages in the array of ages passed in.
+      # it should return the two ages as a sorted array, youngest age first
+      def two_oldest_ages(ages):
+          pass
+
+    answer: |-
+      def two_oldest_ages(ages):
+          oldest = 0
+          next_oldest = 0;
+          for age in ages:
+              if age > oldest:
+                  next_oldest = oldest
+                  oldest = age
+              elif age > next_oldest:
+                  next_oldest = age
+
+          return [next_oldest, oldest]
+
+    fixture: |-
+      from solution import two_oldest_ages
+      import codewars_test as test
+
+      @test.describe("two_oldest_ages")
+      def tests():
+          # Use "it" to identify the conditions you are testing for
+          @test.it("should return the two oldest ages")
+          def test_second_oldest_first():
+              test.assert_equals(two_oldest_ages([1,5,87,45,8,8]), [45, 87])
+              test.assert_equals(two_oldest_ages([6,5,83,5,3,18]), [18, 83])
+
+  bug fixes:
+    setup: |-
+      def add(a, b):
+        a + b
+
+    answer: |-
+      def add(a, b):
+        return a + b
+
+    fixture: |-
+      from solution import add
+      import codewars_test as test
+
+      @test.describe('add')
+      def tests():
+          @test.it('should add both arguments and return')
+          def test_sum():
+              test.assert_equals(add(1, 2), 3)
+              test.assert_equals(add(1, 1), 2)
+
+  refactoring:
+    setup: |-
+      # refactor this method into a Person class with its own greet method
+      def greet(you, me):
+          return "Hello {0}, my name is {1}".format(you, me)
+
+    answer: |-
+      class Person:
+          def __init__(self, name):
+              self.name = name
+
+          def greet(self, name):
+              return "Hello {0}, my name is {1}".format(name, self.name)
+
+    fixture: |-
+      from solution import Person
+      import codewars_test as test
+
+      @test.describe('Person')
+      def tests():
+          @test.it('should have a name')
+          def test_name():
+              jack = Person('Jack')
+              test.assert_equals(jack.name, "Jack")
+
+          @test.it("should greet Jill")
+          def test_greet_jill():
+              jack = Person('Jack')
+              test.assert_equals(jack.greet("Jill"), "Hello Jill, my name is Jack")
+
+          @test.it("should greet other people as well")
+          def test_greet():
+              jack = Person('Jack')
+              test.assert_equals(jack.greet("Jane"), "Hello Jane, my name is Jack")
+
+haskell:
+  default: "reference"
+  reference:
+    setup: |-
+      module Oldest where
+
+      -- | Return the two oldest/oldest ages within the array of ages passed in.
+      --   it should return the two ages as a sorted array, youngest age first
+      twoOldestAges :: [Integer] -> (Integer,Integer)
+      -- TODO: Write me
+
+    answer: |-
+      module Oldest where
+      import Data.List (sort)
+
+      -- | Return the two oldest/oldest ages within the array of ages passed in.
+      --   it should return the two ages as a sorted array, youngest age first
+      twoOldestAges :: [Integer] -> (Integer,Integer)
+      twoOldestAges ages =
+        let [b,a] = take 2 $ reverse $ sort $ ages
+        in (a,b)
+
+    fixture: |-
+      -- test module must end with `Spec`
+      module OldestSpec where
+      -- Hspec (https://hspec.github.io)
+      import Test.Hspec
+      import Text.Printf
+
+      import Oldest
+
+      -- test module must export `spec` of type `Spec`
+      spec :: Spec
+      spec = do
+        -- hspec lets you test your code in blocks, like RSpec
+        describe "twoOldestAges" $ do
+          -- hspec supports nested describe blocks
+          describe (show input1) $ do
+            -- Individual tests are specified with 'it'
+            it (printf "should return %s given %s as input" (show expected1) (show input1))
+            $ do
+              let (a,b) = twoOldestAges input1
+              -- You can test multiple things in an individual test if you want
+              a `shouldBe` fst expected1
+              b `shouldBe` snd expected1
+          describe (show input2) $ do
+            it (printf "should return %s given %s as input" (show expected2) (show input2))
+            $ do twoOldestAges input2 `shouldBe` expected2
+        where
+          input1 = [1,5,87,45,8,8]
+          expected1 = (45,87)
+          input2 = [6,5,83,5,3,18]
+          expected2 = (18,83)
+
+clojure:
+  default: "reference"
+  reference:
+    setup: |-
+      (ns oldest)
+      (defn two-oldest-ages
+       "Returns the two oldest ages"
+       ;; TODO: Program me
+       )
+
+    answer: |-
+      (ns oldest)
+      (defn two-oldest-ages
+        "Returns the two oldest ages"
+        [ages]
+        (->> ages
+             sort
+             reverse
+             (take 2)
+             reverse))
+
+    fixture: |-
+      (ns oldest-test
+        (:require [clojure.test :refer :all]
+                  [oldest :refer [two-oldest-ages]]))
+
+      (deftest basic-test
+       (let [input1 [1 5 87 45 8 8]
+             input2 [6 5 83 5 3 18]]
+       (testing (str "input1: " input1)
+         (is (= (two-oldest-ages input1) [45 87])))
+       (testing (str "input2: " input2)
+         (is (= (two-oldest-ages input2) [18 83])))))
+
+java:
+  default: "reference"
+  reference:
+    setup: |-
+      public class Person {
+        String name;
+
+        public Person(String personName) {
+          // TODO: Program Constructor
+        }
+
+        public String greet(String yourName) {
+          // TODO: Write a greeting string
+        }
+      }
+
+    answer: |-
+      public class Person {
+        String name;
+
+        public Person(String personName) {
+          name = personName;
+        }
+
+        public String greet(String yourName) {
+          return String.format("Hello %s, I'm %s.", yourName, this.name);
+        }
+      }
+
+    fixture: |-
+      import org.junit.jupiter.api.Test;
+      import static org.junit.jupiter.api.Assertions.assertEquals;
+
+      class PersonTest {
+        @Test
+        void testGreet() {
+          Person jack = new Person("Jack");
+          assertEquals("Hello Jill, I'm Jack.", jack.greet("Jill"));
+        }
+      }
+
+elixir:
+  default: algorithms
+  algorithms:
+    setup: |-
+      defmodule AgeUtils do
+        # return the two oldest/oldest ages within the array of ages passed in.
+        # it should return the two ages as a sorted array, youngest age first
+        def two_oldest_ages(ages) when is_list(ages) do
+
+        end
+      end
+
+    answer: |-
+      defmodule AgeUtils do
+        def two_oldest_ages(ages) when is_list(ages) do
+          ages |> Enum.sort |> Enum.reverse |> Enum.take(2) |> Enum.reverse
+        end
+      end
+
+    fixture: |-
+      defmodule TestAgeUtils do
+        use ExUnit.Case
+
+        test "returns correct ages for different lists" do
+          results1 = AgeUtils.two_oldest_ages([1,5,87,45,8,8])
+          results2 = AgeUtils.two_oldest_ages([6,5,83,5,3,18])
+
+          assert results1 == [45, 87]
+          assert results2 == [18, 83]
+        end
+      end
+
+  bug_fixes:
+    setup: |-
+      defmodule Person do
+        defstruct name: nil
+
+        #TODO: The greet function is not returning the expected value.
+        def greet(person) when is_map(person) do
+          "Hello my name is #{person["name"]}"
+        end
+      end
+
+    answer: |-
+      defmodule Person do
+        defstruct name: nil
+
+        def greet(person) when is_map(person) do
+          "Hello my name is #{person.name}"
+        end
+      end
+
+    fixture: |-
+      defmodule TestPerson do
+        use ExUnit.Case
+
+        test "greets any proper Person" do
+          jack = %Person{name: "Jack"}
+          jill = %Person{name: "Jill"}
+
+          assert Person.greet(jack) == "Hello my name is Jack"
+          assert Person.greet(jill) == "Hello my name is Jill"
+        end
+      end
+
+  refactoring:
+    setup: |-
+      defmodule Person do
+        defstruct name: nil
+
+        # TODO: This method needs to be called multiple times for the same person (my_name).
+        # It would be nice if we didnt have to always pass in my_name every time we needed to great someone.
+        def greet(my_name, your_name) do
+          "Hello #{your_name}, my name is #{my_name}"
+        end
+      end
+
+    answer: |-
+      defmodule Person do
+        defstruct name: nil
+
+        def greet(person, your_name) do
+          "Hello #{your_name}, my name is #{person.name}"
+        end
+      end
+
+    fixture: |-
+      defmodule TestPerson do
+        use ExUnit.Case
+
+        test "greets any proper Person" do
+          jack = %Person{name: "Jack"}
+          jill = %Person{name: "Jill"}
+
+          assert Person.greet(jack, "Jill") == "Hello Jill, my name is Jack"
+          assert Person.greet(jack, "Mary") == "Hello Mary, my name is Jack"
+          assert Person.greet(jill, "Jack") == "Hello Jack, my name is Jill"
+        end
+      end
+
+  reference:
+    setup: |-
+      defmodule WebSite do
+        def websites, do: []
+      end
+
+    answer: |-
+      defmodule WebSite do
+        # add the values "codewars" to the websites list
+        def websites, do: ["codewars"]
+      end
+
+    fixture: |-
+      defmodule TestWebSite do
+        use ExUnit.Case
+
+        test "websites returns proper list" do
+          assert is_list(WebSite.websites) == true
+          assert length(WebSite.websites) == 1
+          assert WebSite.websites == ["codewars"]
+        end
+      end
+
+typescript:
+  default: algorithms
+  algorithms:
+    setup: |-
+      // return the two oldest/oldest ages within the array of ages passed in.
+      // it should return the two ages as a sorted array, youngest age first
+      export function twoOldestAges(ages: number[]): number[] {
+      }
+
+    answer: |-
+      export function twoOldestAges(ages: number[]): number[] {
+        let oldest = 0;
+        let nextOldest = 0;
+        for (let i = 0; i < ages.length; i++) {
+          const age = ages[i];
+          if (age > oldest) {
+            nextOldest = oldest;
+            oldest = age;
+          }
+          else if (age > nextOldest) {
+            nextOldest = age;
+          }
+        }
+        return [nextOldest, oldest];
+      }
+
+    fixture: |-
+      import { assert } from "chai";
+
+      import { twoOldestAges } from "./solution";
+
+      describe("twoOldestAges([1,5,87,45,8,8])", function() {
+        const results1 = twoOldestAges([1, 5, 87, 45, 8, 8]);
+
+        it("Should return something that isn't falsy", function() {
+          assert.isOk(results1);
+        });
+
+        it("Should return [45,87]", function() {
+          assert.deepEqual(results1, [45, 87]);
+        });
+      });
+
+dart:
+  default: 'algorithms'
+  algorithms:
+    setup: |-
+      // Return the two oldest/oldest ages within the array of ages passed in.
+      // it should return the two ages as a sorted array, youngest age first
+      twoOldestAges(ages){
+      	// Your code here...
+      }
+
+    answer: |-
+      twoOldestAges(ages){
+        var oldest = 0, nextOldest;
+
+        for(var i = 0;i < ages.length;i++) {
+          var age = ages[i];
+          if (age > oldest){
+            nextOldest = oldest;
+            oldest = age;
+          }
+          else if(age > nextOldest){
+            nextOldest = age;
+          }
+        }
+        return [nextOldest, oldest];
+      }
+
+    fixture: |-
+      import "package:test/test.dart";
+      import "package:solution/solution.dart";
+
+      void main() {
+        test('Should return [45,87]', () {
+          expect(twoOldestAges([1, 5, 87, 45, 8, 8]), equals([45,87]));
+        });
+      }
+
+  bug fixes:
+    setup: |-
+      class Person {
+        String _name;
+        Person(this._name);
+
+        //TODO: The greet method is not returning the expected value.
+        greet() => 'Hello my name is _name';
+      }
+
+    answer: |-
+      class Person {
+        String _name;
+        Person(this._name);
+
+        //TODO: The greet method is not returning the expected value.
+        greet() => 'Hello my name is $_name';
+      }
+
+    fixture: |-
+      import "package:test/test.dart";
+      import "package:solution/solution.dart";
+
+      void main() {
+        test('Greet is correct', () {
+          var jack = new Person('Jack');
+          var jill = new Person('Jill');
+
+          expect(jack.greet(),equals('Hello my name is Jack'));
+          expect(jill.greet(),equals('Hello my name is Jill'));
+        });
+      }
+
+  refactoring:
+    setup: |-
+      // TODO: This method needs to be called multiple times for the same person (myName).
+      // It would be nice if we didnt have to always pass in myName every time we needed to great someone.
+      greet(myName, yourName) {
+        return 'Hello $yourName, my name is $myName';
+      }
+
+    answer: |-
+      class Person {
+        var _name;
+        Person(this._name);
+
+        greet(yourName) => 'Hello $yourName, my name is $_name';
+      }
+
+  reference:
+    setup: |-
+      var websites = [];
+
+    answer: |-
+      // add the values "codewars" to the websites array
+      var websites = ['codewars'];
+
+    fixture: |-
+      import "package:test/test.dart";
+      import "package:solution/solution.dart";
+
+      void main() {
+        test('Codewars is in the array', () {
+          expect(websites.length, greaterThan(0));
+          expect(websites.length, equals(1));
+          expect(websites[0], equals('codewars'));
+        });
+      }
+
+cpp:
+  default: 'algorithms'
+  algorithms:
+    setup: |-
+      #include <list>
+      using namespace std;
+      // return the two oldest/oldest ages within the array of ages passed in.
+      // it should return the two ages as a sorted array, youngest age first
+      list<int> two_oldest_ages(list<int> ages) {
+
+      }
+
+    answer: |-
+      #include <list>
+      #include <iostream>
+      using namespace std;
+      list<int> two_oldest_ages(list<int> ages) {
+          int oldest = 0, nextOldest;
+          for(auto& age:ages) {
+              if(age > oldest) {
+                  nextOldest = oldest;
+                  oldest = age;
+              }
+              else if(age > nextOldest) {
+                  nextOldest = age;
+              }
+          }
+          return list<int> {nextOldest, oldest};
+      }
+
+    fixture: |-
+      list<int> results = two_oldest_ages({ 1, 5, 87, 45, 8, 8 });
+      Describe(two_oldest_ages_test)
+      {
+          It(should_return_the_oldest)
+          {
+              Assert::That(results.front(), Equals(45));
+          }
+          It(thing_inherit_from_base)
+          {
+              Assert::That(results.back(), Equals(87));
+          }
+      };
+
+  bug fixes:
+    setup: |-
+      struct Entity {
+          int run() {
+            return speed;
+          }
+          int speed = 5;
+      };
+
+      // TODO: player.run() returning 5 instead of 10!
+      struct Player: public Entity {
+          int speed = 10;
+      };
+
+    answer: |-
+      struct Entity {
+          int run() {
+              return speed();
+          }
+          virtual int speed() {
+              return 5;
+          }
+      };
+
+      struct Player: public Entity {
+          virtual int speed() {
+              return 10;
+          }
+      };
+
+    fixture: |-
+      Entity e;
+      Player p;
+
+      Describe(entity)
+      {
+          It(should_run_at_speed_5) {
+              Assert::That(e.run(), Equals(5));
+          }
+      };
+
+      Describe(player)
+      {
+          It(should_run_at_speed_10) {
+              Assert::That(p.run(), Equals(10));
+          }
+      };
+
+php:
+  default: algorithms
+  bug fixes:
+    setup: |-
+      <?php
+      multiply(a, b) {
+        a * b
+      }
+    answer: |-
+      <?php
+      function multiply($a, $b) {
+        return $a * $b;
+      }
+    fixture: |-
+      <?php
+      use PHPUnit\Framework\TestCase;
+      class MultiplyTest extends TestCase
+      {
+          public function testMultiply() {
+            $this->assertEquals(multiply(1, 1), 1);
+            $this->assertEquals(multiply(2, 3), 6);
+            $this->assertEquals(multiply(3, 2), 6);
+            $this->assertEquals(multiply(3, 5), 15);
+            $this->assertEquals(multiply(5, 3), 15);
+            $this->assertEquals(multiply(4, 7), 28);
+            $this->assertEquals(multiply(7, 4), 28);
+          }
+      }
+  algorithms:
+    setup: |-
+      <?php
+      // return the two oldest/oldest ages within the array of ages passed in.
+      // it should return the two ages as a sorted array, youngest age first
+      function twoOldestAges(ages){
+
+      }
+    answer: |-
+      <?php
+      function twoOldestAges($ages){
+        $oldest = 0;
+        $nextOldest;
+        for($i = 0; $i < count($ages); $i++){
+          $age = $ages[$i];
+          if ($age > $oldest){
+            $nextOldest = $oldest;
+            $oldest = $age;
+          }
+          elseif ($age > $nextOldest){
+            $nextOldest = $age;
+          }
+        }
+        return [$nextOldest, $oldest];
+      }
+    fixture: |-
+      <?php
+      use PHPUnit\Framework\TestCase;
+      class TwoOldestAgesTest extends TestCase
+      {
+          public function testAlgorithm() {
+              $results1 = twoOldestAges([1, 5, 87, 45, 8, 8]);
+              $this->assertEquals($results1[0], 45);
+              $this->assertEquals($results1[1], 87);
+              $results2 = twoOldestAges([6, 5, 83, 5, 3, 18]);
+              $this->assertEquals($results2, [18, 83]);
+          }
+      }
+julia:
+  default: algorithms
+  algorithms:
+    setup: |-
+      module AgeUtils
+        export two_oldest_ages
+        # return the two oldest/oldest ages within the array of ages passed in.
+        # it should return the two ages as a sorted array, youngest age first
+        function two_oldest_ages(ages)
+          # TODO: complete
+        end
+      end
+
+    answer: |-
+      module AgeUtils
+        export two_oldest_ages
+        function two_oldest_ages(ages)
+          return collect(Iterators.drop(sort(ages), length(ages) - 2))
+        end
+      end
+
+    fixture: |-
+      using FactCheck
+      using AgeUtils
+      facts("AgeUtils") do
+        context("two_oldest_ages") do
+          @fact two_oldest_ages([1,5,87,45,8,8]) --> [45,87]
+          @fact two_oldest_ages([6,5,83,5,3,18]) --> [18,83]
+        end
+      end
+
+crystal:
+  default: algorithms
+  algorithms:
+    setup: |-
+      # return the two oldest/oldest ages within the array of ages passed in.
+      # it should return the two ages as a sorted array, youngest age first
+      def two_oldest_ages(ages)
+      end
+
+    answer: |-
+      def two_oldest_ages(ages)
+        oldest = 0
+        next_oldest = 0;
+        ages.each do |age|
+          if age > oldest
+            next_oldest = oldest
+            oldest = age
+          elsif age > next_oldest
+            next_oldest = age
+          end
+        end
+        [next_oldest, oldest]
+      end
+
+    fixture: |-
+      results1 = two_oldest_ages [1,5,87,45,8,8]
+      results2 = two_oldest_ages [6,5,83,5,3,18]
+
+      describe "two_oldest_ages" do
+        it "should return the two oldest ages" do
+          results1[0].should eq 45
+          results1[1].should eq 87
+
+          results2[0].should eq 18
+          results2[1].should eq 83
+        end
+      end
+
+rust:
+  default: algorithms
+  algorithms:
+    setup: |-
+      // Return the pair of two oldest ages, the younger first.
+      // Return `None` there are less than 2 ages.
+      pub fn two_oldest_ages(ages: &[u8]) -> Option<(u8, u8)> {
+          None
+      }
+
+    answer: |-
+      pub fn two_oldest_ages(ages: &[u8]) -> Option<(u8, u8)> {
+          if ages.len() < 2 {
+              return None;
+          }
+
+          let (mut next, mut oldest) = if ages[0] < ages[1] {
+              (ages[0], ages[1])
+          } else {
+              (ages[1], ages[0])
+          };
+          for age in ages.iter().skip(2) {
+              if *age > oldest {
+                  next = oldest;
+                  oldest = *age;
+              } else if *age > next {
+                  next = *age;
+              }
+          }
+          Some((next, oldest))
+      }
+
+    fixture: |-
+      #[cfg(test)]
+      mod tests {
+          use super::*;
+
+          #[test]
+          fn returns_oldest() {
+              assert_eq!(two_oldest_ages(&[1, 5, 87, 45, 8, 8]), Some((45, 87)));
+          }
+      }
+
+fsharp:
+  default: reference
+  reference:
+    setup: |
+        module ExampleKata
+
+        type Answer = Even | Odd
+
+        let oddOrEven n = Answer.Even
+
+    answer: |
+        module ExampleKata
+
+        type Answer = Even | Odd
+
+        let oddOrEven n = match n % 2 with
+                          | 0 -> Answer.Even
+                          | _ -> Answer.Odd
+
+    fixture: |
+        module ExampleTests
+
+        open ExampleKata
+
+        open NUnit.Framework
+
+        [<Test>]
+        let TestZero_TopLevelTest () =
+            Assert.AreEqual(Answer.Even, oddOrEven 0)
+
+        [<TestFixture>]
+        type FixedTest() =
+            [<Test>]
+            member this.TestOne() =
+                Assert.AreEqual(Answer.Odd, oddOrEven 1)
+
+            [<Test>]
+            member this.TestNegativeOdd ([<Values(-1, -3, -1001)>] n ) =
+                Assert.AreEqual(Answer.Odd, oddOrEven n)
+
+            [<TestCase(-2)>]
+            [<TestCase(-42)>]
+            [<TestCase(-1024)>]
+            member this.TestNegativeEven n =
+                Assert.AreEqual(Answer.Even, oddOrEven n)
+
+ocaml:
+  default: reference
+  reference:
+    setup: |-
+        module Person = struct
+            type t = { name: string }
+            let greet (person: t) = (* TODO: write a greeter *)
+        end
+
+    answer: |-
+        module Person = struct
+            type t = { name: string }
+            let greet (person: t) = "Hello, " ^ person.name ^ "!"
+        end
+
+    fixture: |-
+        module Tests = struct
+            open OUnit
+            let suite = [
+                "Person module" >:::
+                    [
+                        "test_greet" >:: (fun _ ->
+                            let person : Person.t = { Person.name = "Jack" } in
+                            assert_equal "Hello, Jack!" (Person.greet person)
+                        )
+                    ]
+                ]
+            ;;
+        end
+
+swift:
+  default: reference
+  reference:
+    setup: |-
+      class Person {
+          let name: String
+
+          init(_ name: String) {
+              // TODO: Program Constructor
+          }
+
+          func greet(_ other: String) -> String {
+              // TODO: Write a greeting string
+          }
+      }
+
+    answer: |-
+      class Person {
+          let name: String
+
+          init(_ name: String) {
+              self.name = name
+          }
+
+          func greet(_ other: String) -> String {
+              return "Hello, \(other), I am \(name), it's nice to meet you!"
+          }
+      }
+
+    fixture: |-
+      import XCTest
+
+      class PersonTest: XCTestCase {
+          static var allTests = [
+              ("testGreet", testGreet),
+          ]
+          func testGreet() {
+              let person = Person("Jorge")
+              XCTAssertEqual(person.greet("Aditya"), "Hello, Aditya, I am Jorge, it's nice to meet you!")
+          }
+      }
+      XCTMain([
+          testCase(PersonTest.allTests)
+      ])
+
+sql:
+  default: reference
+  reference:
+    setup: -- select all of the items
+    answer: SELECT * FROM items
+    fixture: |-
+      # you can use Sequel (https://github.com/jeremyevans/sequel) to setup your database.
+      # The connection is already made for you.
+
+      # You can also move this code into the preloaded section so that its available
+      # for all tests (including examples).
+
+      DB.create_table :items do
+        primary_key :id
+        String :name
+        Float :price
+      end
+
+      items = DB[:items] # Create a dataset
+
+      # Populate the table
+      # You can use Faker (https://github.com/stympy/faker) to generate data
+      3.times do
+        items.insert(name: Faker::Company.name, price: Faker::Commerce.price)
+      end
+
+      results = run_sql
+
+      describe :items do
+         it "should return 3 items" do
+          expect(results.count).to eq 3
+         end
+      end
+objc:
+  default: reference
+  reference:
+    setup: |-
+      #import <Foundation/Foundation.h>
+      NSString* String2x (NSString *str){
+      }
+    answer: |-
+      #import <Foundation/Foundation.h>
+      NSString* String2x (NSString *str){
+        return [str stringByAppendingString:str];
+      }
+    fixture: |-
+      @implementation TestSuite
+        - (void) testsIfReturnsADoubledString
+        {
+          UKStringsEqual(@"doubledouble", String2x(@"double"));
+          UKStringsNotEqual(@"double", String2x(@"double"));
+        }
+      @end
+
+c:
+  default: algorithms
+  bug_fixes:
+    setup: |-
+      int multiply(int a, int b ) {
+        int m = a * b;
+      }
+    answer: |-
+      int multiply(int a, int b ) {
+        int m = a * b;
+        return m;
+      }
+    fixture: |-
+      #include <criterion/criterion.h>
+      int multiply(int,int);
+
+      Test(the_multiply_function, should_pass_all_the_tests_provided) {
+          cr_assert_eq(multiply(1, 1), 1);
+          cr_assert_eq(multiply(2, 3), 6);
+          cr_assert_eq(multiply(3, 2), 6);
+          cr_assert_eq(multiply(3, 5), 15);
+          cr_assert_eq(multiply(3, 5), 15);
+          cr_assert_eq(multiply(4, 7), 28);
+          cr_assert_eq(multiply(7, 4), 28);
+          cr_assert_eq(multiply(7, 0), 0);
+      }
+  algorithms:
+    setup: |-
+      // check whether an input alphabet is a vowel or not.
+      // it should return 1 if it is a vovel, 0 if not.
+      int is_vowel(char a)
+      {
+      }
+    answer: |-
+      int is_vowel(char a)
+      {
+          if (a >= 'A' && a <= 'Z')
+             a = a + 'a' - 'A';
+
+          if (a == 'a' || a == 'e' || a == 'i' || a == 'o' || a == 'u')
+             return 1;
+
+          return 0;
+      }
+    fixture: |-
+      #include <criterion/criterion.h>
+      int is_vowel(char a);
+
+      Test(is_vowel, should_pass_all_the_tests_provided) {
+          cr_assert(is_vowel('a'));
+          cr_assert(is_vowel('A'));
+          cr_assert(is_vowel('i'));
+          cr_assert(is_vowel('O'));
+          cr_assert_not(is_vowel('Z'));
+          cr_assert_not(is_vowel('s'));
+          cr_assert_not(is_vowel('d'));
+          cr_assert_not(is_vowel('0'));
+          cr_assert_not(is_vowel('?'));
+          cr_assert_not(is_vowel('='));
+          cr_assert_not(is_vowel('\n'));
+          cr_assert_not(is_vowel('_'));
+          cr_assert_not(is_vowel('>'));
+      }
+
+lua:
+  default: algorithms
+  fundamentals:
+    setup: |-
+      local t = {}
+      t.websites = {}
+      return t
+    answer: |-
+      local t = {}
+      t.websites = {"codewars"}
+      return t
+    fixture: |-
+      local s = require 'solution'
+      describe("websites", function()
+        it("should include codewars", function()
+          assert.are.same({"codewars"}, s.websites)
+        end)
+      end)
+
+  algorithms:
+    setup: |-
+      local t = {}
+      function t.twoOldestAges(ages)
+      end
+      return t
+    answer: |-
+      local t = {}
+      function t.twoOldestAges(ages)
+        local a, b = 0, 0
+        for _, v in ipairs(ages) do
+          if     v > b then a, b = b, v
+          elseif v > a then a = v
+          else
+          end
+        end
+        return a, b
+      end
+      return t
+    fixture: |-
+      local s = require 'solution'
+      describe("twoOldestAges", function()
+        it("should return 45 and 87 for input {1,5,87,45,8,8}", function()
+          assert.are.same({45, 87}, {s.twoOldestAges({1,5,87,45,8,8})})
+        end)
+        it("should return 18 and 83 for input {6,5,83,5,3,18}", function()
+          assert.are.same({18, 83}, {s.twoOldestAges({6,5,83,5,3,18})})
+        end)
+      end)
+
+  bug fixes:
+    setup: |-
+      local t = {}
+      function t.add(a, b)
+        a + b
+      end
+      return t
+    answer: |-
+      local t = {}
+      function t.add(a, b)
+        return a + b
+      end
+      return t
+    fixture: |-
+      local s = require 'solution'
+      describe("add", function()
+        it("add numbers", function()
+          assert.are.same(2, s.add(1, 1))
+          assert.are.same(1, s.add(1, 0))
+        end)
+      end)
+
+  refactoring:
+    setup: |-
+      -- TODO: Rewrite in object oriented way
+      -- me = Person:new(myName)
+      -- me:greet(yourName)
+      -- me:greet(anotherName)
+      local t = {}
+      function t.greet(myName, yourName)
+        return "Hello " .. yourName .. ", my name is " .. myName
+      end
+      return t
+    answer: |-
+      local Person = {name = ""}
+      function Person:new(name)
+        local o = {}
+        setmetatable(o, self)
+        o.name = name
+        self.__index = self
+        return o
+      end
+      function Person:greet(yourName)
+        return "Hello " .. yourName .. ", my name is " .. self.name
+      end
+      local t = {}
+      t.Person = Person
+      return t
+    fixture: |-
+      local s = require 'solution'
+      describe("Person", function()
+        it("should greet", function()
+          local jack = s.Person:new("Jack")
+          assert.are.same("Hello Jill, my name is Jack", jack:greet("Jill"))
+          assert.are.same("Hello Mary, my name is Jack", jack:greet("Mary"))
+        end)
+      end)
+
+go:
+  default: algorithms
+  fundamentals:
+    setup: |-
+      package fundamentals
+      var Websites = []string{}
+    answer: |-
+      package fundamentals
+      var Websites = []string{"codewars"}
+    fixture: |-
+      package fundamentals_test
+      import (
+        . "github.com/onsi/ginkgo"
+        . "github.com/onsi/gomega"
+        . "codewarrior/fundamentals"
+      )
+      var _ = Describe("Websites", func() {
+        It("should not be empty", func() {
+          Expect(Websites).NotTo(BeEmpty())
+        })
+        It("should have length 1", func() {
+          Expect(Websites).To(HaveLen(1))
+        })
+        It("should include codewars", func() {
+          Expect(Websites[0]).To(Equal("codewars"))
+        })
+      })
+
+  algorithms:
+    setup: |-
+      package kata
+      func TwoOldestAges(ages []int) [2]int {
+      }
+    answer: |-
+      package kata
+      func TwoOldestAges(ages []int) [2]int {
+        a, b := 0, 0
+        for _, v := range ages {
+          if v > b {
+            a, b = b, v
+          } else if v > a {
+            a = v
+          }
+        }
+        return [2]int{a, b}
+      }
+    fixture: |-
+      package kata_test
+      import (
+        . "github.com/onsi/ginkgo"
+        . "github.com/onsi/gomega"
+        . "codewarrior/kata"
+      )
+      var _ = Describe("TwoOldestAges", func() {
+        It("should return 45 and 87 for input []int{1,5,87,45,8,8}", func() {
+          Expect(TwoOldestAges([]int{1,5,87,45,8,8})).To(Equal([2]int{45,87}))
+        })
+        It("should return 18 and 83 for input []int{6,5,83,5,3,18}", func() {
+          Expect(TwoOldestAges([]int{6,5,83,5,3,18})).To(Equal([2]int{18,83}))
+        })
+      })
+
+  bug fixes:
+    setup: |-
+      package kata
+      func Add(a, b int) int {
+        a + b
+      }
+    answer: |-
+      package kata
+      func Add(a, b int) int {
+        return a + b
+      }
+    fixture: |-
+      package kata_test
+      import (
+        . "github.com/onsi/ginkgo"
+        . "github.com/onsi/gomega"
+        "codewarrior/kata"
+      )
+      var _ = Describe("Add", func() {
+        It("should add integers", func() {
+          Expect(kata.Add(1, 1)).To(Equal(2))
+        })
+      })
+
+  refactoring:
+    setup: |-
+      package person
+      // TODO: Define a struct Person having Name with method Greet
+      func Greet(myName, yourName string) string {
+        return "Hello " + yourName + ", my name is " + myName
+      }
+    answer: |-
+      package person
+      type Person struct {
+        Name string
+      }
+      func (p *Person) Greet(yourName string) string {
+        return "Hello " + yourName + ", my name is " + p.Name
+      }
+    fixture: |-
+      package person_test
+      import (
+        . "github.com/onsi/ginkgo"
+        . "github.com/onsi/gomega"
+        . "codewarrior/person"
+      )
+      var _ = Describe("Person", func() {
+        It("should greet", func() {
+          jack := Person{"Jack"}
+          Expect(jack.Greet("Jill")).To(Equal("Hello Jill, my name is Jack"))
+          Expect(jack.Greet("Mary")).To(Equal("Hello Mary, my name is Jack"))
+        })
+      })
+
+bf:
+  default: algorithms
+  bug fixes:
+    setup: |-
+      ++++++++++[>+++++++>++++++++++>+++++++++++>+++>+++++++++<<<<<->++.>+.>--.+++.>++.>---.<<.+++.------.<-.>>+
+    answer: |-
+      ++++++++++[>+++++++>++++++++++>+++++++++++>+++>+++++++++<<<<<-]>++.>+.>--..+++.>++.>---.<<.+++.------.<-.>>+.
+    fixture: |-
+      Test.describe("Your Hello World Program", function () {
+        Test.it("should return the string \"Hello World!\"", function () {
+          Test.assertEquals(runBF(), "Hello World!");
+        });
+      });
+  algorithms:
+    setup: |-
+      [
+        TODO: Write a BF program that accepts exactly 2 characters as input,
+        multiplies the ASCII character codes of the two characters and returns
+        the corresponding character
+
+        E.g.
+        Input: byte(9), byte(8)
+        Output: byte(72) - prints out "H"
+      ]
+    answer: |-
+      ,>,<      Read two bytes of input (byte(a) and byte(b)) from the input stream
+      [         while a is greater than 0
+        -       Decrement a
+        >       Move pointer to b
+        [       while b is greater than 0
+          -     Decrement b
+          >+>+  Move to cells 3 and 4 and increment both cells
+          <<    Go back to cell 2
+        ]       end while
+        >>      Move to cell 4
+        [       while cell 4 greater than 0
+          -     Decrement cell 4
+          <<    Move to cell 2
+          +     Increment cell 2
+          >>    Return to cell 4
+        ]       end while
+        <<<     Return to cell 1
+      ]         end while
+      >>        Goto cell 3 (a * b)
+      .         Output Result
+    fixture: |-
+      Test.describe("Your Multiply Program", function () {
+        Test.it("should work for the example provided in the loop comment", function () {
+          Test.assertEquals(runBF(String.fromCharCode(9, 8)), "H");
+        });
+        Test.it("should work for some fixed tests", function () {
+          Test.assertEquals(runBF(String.fromCharCode(0, 0)), String.fromCharCode(0));
+          Test.assertEquals(runBF(String.fromCharCode(17, 0)), String.fromCharCode(0));
+          Test.assertEquals(runBF(String.fromCharCode(1, 1)), String.fromCharCode(1));
+          Test.assertEquals(runBF(String.fromCharCode(2, 4)), String.fromCharCode(8));
+          Test.assertEquals(runBF(String.fromCharCode(3, 5)), String.fromCharCode(15));
+          Test.assertEquals(runBF(String.fromCharCode(5, 3)), String.fromCharCode(15));
+          Test.assertEquals(runBF(String.fromCharCode(5, 9)), String.fromCharCode(45));
+          Test.assertEquals(runBF(String.fromCharCode(15, 12)), String.fromCharCode(180));
+          Test.assertEquals(runBF(String.fromCharCode(15, 15)), String.fromCharCode(225));
+        });
+        Test.it("should work for some random tests", function () {
+          for (var i = 0; i < 100; i++) {
+            var a = Math.floor(Math.random() * 16); // Random integer from 0 to 15 (inclusive)
+            var b = Math.floor(Math.random() * 16);
+            Test.assertEquals(runBF(String.fromCharCode(a, b)), String.fromCharCode(a * b));
+          }
+        });
+      });
+
+r:
+  default: algorithms
+  fundamentals:
+    setup: |-
+      websites <- c()
+    answer: |-
+      websites <- c("codewars")
+    fixture: |-
+      test_that("fundamentals", {
+        expect_equal(websites, c("codewars"))
+      })
+
+  algorithms:
+    setup: |-
+      two_oldest_ages <- function(ages) {
+      }
+    answer: |-
+      two_oldest_ages <- function(ages) {
+        a <- 0
+        b <- 0
+        for (v in ages) {
+          if (v > b) {
+            a <- b
+            b <- v
+          } else if (v > a) {
+            a <- v
+          }
+        }
+        c(a, b)
+      }
+    fixture: |-
+     test_that("two_oldest_ages works", {
+       expect_equal(two_oldest_ages(c(1,5,87,45,8,8)), c(45,87))
+       expect_equal(two_oldest_ages(c(6,5,83,5,3,18)), c(18,83))
+     })
+
+  bug fixes:
+     setup: |-
+       add -> function(a, b) { a + b }
+     answer: |-
+       add <- function(a, b) { a + b }
+     fixture: |-
+       context("add")
+
+       test_that("add(a, b) works for some inputs", {
+         expect_equal(add(1, 1), 2)
+         expect_equal(add(1, 2), 3)
+         expect_equal(add(1, 3), 4)
+         expec t_equal(add(1, 4), 5)
+         expect_equal(add(2, 3), 5)
+       })
+
+       test_that("add(a, b) works for random inputs", {
+         for (i in 0:10) {
+           v <- floor(runif(2, min=0, max=101))
+           expect_equal(add(v[1], v[2]), v[1]+v[2])
+         }
+       })
+nim:
+  default: algorithms
+  algorithms:
+    setup: |-
+      proc two_oldest_ages*(ages: seq[int]): array[2,int]
+
+    answer: |-
+      proc two_oldest_ages*(ages: seq[int]): array[2,int] =
+        var a = 0
+        var b = 0
+        for age in ages:
+          if age > b:
+            a = b
+            b = age
+          elif age > a:
+            a = age
+        return [a, b]
+
+    fixture: |-
+      suite "two oldest ages":
+        test "returns two oldest ages @[1,5,87,45,8,8]":
+          check(two_oldest_ages(@[1,5,87,45,8,8]) == [45, 87])
+        test "returns two oldest ages @[6,5,83,5,3,18]":
+          check(two_oldest_ages(@[6,5,83,5,3,18]) == [18, 83])
+
+  fundamentals:
+    setup: |-
+      var websites*: seq[string]
+    answer: |-
+      var websites* = @["codewars"]
+    fixture: |-
+      suite "fundamentals":
+        test "codewars":
+          check(websites == @["codewars"])
+
+  bug fixes:
+    setup: |-
+      proc add*(a, b: int): int =
+        var result = a + b
+    answer: |-
+      proc add*(a, b: int): int = a + b
+    fixture: |-
+      suite "add":
+        test "1 + 1 = 2":
+          check(add(1, 1) == 2)
+
+powershell:
+  default: bug fixes
+  algorithms:
+    setup: |-
+      function Add-Numbers($a, $b) {
+        return $a - $b
+      }
+
+    answer: |-
+      function Add-Numbers($a, $b) {
+        return $a + $b
+      }
+
+    fixture: |-
+      BeforeAll {
+        . $PSCommandPath.Replace('.Tests.ps1', '.ps1')
+      }
+      Describe "Add-Numbers" {
+        It "adds positive numbers" {
+          Add-Numbers 1 1 | Should -Be 2
+        }
+      }
+
+erlang:
+  default: algorithms
+  algorithms:
+    setup: |-
+      -module(algo).
+      -export([two_oldest_ages/1]).
+
+      two_oldest_ages(List) ->
+        [0, 0].
+
+    answer: |-
+      -module(algo).
+      -export([two_oldest_ages/1]).
+
+      two_oldest_ages(List) ->
+        lists:nthtail(length(List)-2, lists:sort(List)).
+
+    fixture: |-
+      -module(algo_tests).
+      -include_lib("eunit/include/eunit.hrl").
+
+      two_oldest_ages_test_() ->
+        {"Two Oldest Ages",
+          [{"returns [45, 87] for [1,5,87,45,8,8]", ?_assertMatch([45, 87], algo:two_oldest_ages([1,5,87,45,8,8]))},
+           {"returns [18, 83] for [6,5,83,5,3,18]", ?_assertMatch([18, 83], algo:two_oldest_ages([6,5,83,5,3,18]))}]}.
+
+shell:
+  default: fundamentals
+  fundamentals:
+    setup: |-
+      # TODO: return the value passed in
+
+    answer: |-
+      echo $1
+
+    fixture: |-
+      describe "solution" do
+        it "should return 42" do
+           result = run_shell args: [42]
+           expect(result.strip).to eq "42"
+        end
+        it "should return 100" do
+           result = run_shell args: [100]
+           expect(result.strip).to eq "100"
+        end
+      end
+
+solidity:
+  default: fundamentals
+  fundamentals:
+    setup: |
+      // SPDX-License-Identifier: Unlicense
+      pragma solidity ^0.8.0;
+      import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+      // uncomment the next line to use preloaded code
+      // import "./preloaded.sol";
+
+      contract ExampleToken is ERC20 {
+        constructor() ERC20("ExampleToken", "EGT") {
+        }
+      }
+
+    answer: |
+      // SPDX-License-Identifier: Unlicense
+      pragma solidity ^0.8.0;
+      import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+      // uncomment the next line to use preloaded code
+      // import "./preloaded.sol";
+
+      contract ExampleToken is ERC20 {
+        constructor() ERC20("ExampleToken", "EGT") {
+          _mint(msg.sender, 10000);
+        }
+      }
+
+    fixture: |
+      const { assert } = require("chai");
+
+      describe('Example', function() {
+        it("should put 10000 in the first account", async function() {
+          const [owner] = await ethers.getSigners();
+          const ExampleToken = await ethers.getContractFactory("ExampleToken");
+          const exampleToken = await ExampleToken.deploy();
+
+          const balance = await exampleToken.balanceOf(owner.address);
+          assert.equal(balance.valueOf(), 10000, "10000 wasn't in the first account");
+        });
+      });
+
+scala:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      package com.example
+      object Buggy {
+        def multiply(a: Int, b: Int) = a - b
+      }
+
+    answer: |-
+      package com.example
+      object Buggy {
+        def multiply(a: Int, b: Int) = a * b
+      }
+
+    fixture: |-
+      import org.scalatest.flatspec.AnyFlatSpec
+      import org.scalatest.matchers.should.Matchers
+      import com.example._
+
+      // ScalaTest (http://www.scalatest.org)
+      class BugFixesSpec extends AnyFlatSpec with Matchers {
+        "multiply(1, 1)" should "return 1" in {
+          Buggy.multiply(1, 1) should be (1)
+        }
+      }
+
+groovy:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      class Multiplier {
+        static def multiply(a, b) {
+          a + b
+        }
+      }
+    answer: |-
+      class Multiplier {
+        static def multiply(a, b) {
+          return a * b
+        }
+      }
+
+    fixture: |-
+      import org.junit.Test
+
+      // You can use JUnit
+      class TestMultiply {
+        @Test
+        void returnsProduct() {
+          assert Multiplier.multiply(1, 1) == 1
+        }
+      }
+
+      // Or you can use Spock
+      //import spock.lang.Specification
+      //import spock.lang.Unroll
+      //
+      //class MultiplierSpec extends Specification {
+      //  @Unroll
+      //  def "Multiplier.multipy(#a, #b) returns the product #c"() {
+      //    expect:
+      //    Multiplier.multiply(a, b) == c
+      //
+      //    where:
+      //    a | b || c
+      //    1 | 1 || 1
+      //    1 | 2 || 2
+      //    1 | 3 || 3
+      //  }
+      //}
+
+kotlin:
+  default: algorithms
+  algorithms:
+    setup: |-
+      package algos
+
+      fun twoOldestAges(xs: List<Int>): List<Int> {
+        return listOf(0, 0)
+      }
+
+    answer: |-
+      package algos
+
+      fun twoOldestAges(xs: List<Int>): List<Int> {
+        var a = 0
+        var b = 0
+        for (x in xs) {
+          if (x > b) {
+            a = b
+            b = x
+          } else if (x > a) {
+            a = x
+          }
+        }
+        return listOf(a, b)
+      }
+
+    fixture: |-
+      package algos
+
+      import kotlin.test.assertEquals
+      import org.junit.Test
+
+      // You can use JUnit
+      class TestTwoOldestAges {
+        @Test
+        fun returnsTwoOldest1() {
+          assertEquals(listOf(45, 87), twoOldestAges(listOf(1,5,87,45,8,8)))
+        }
+        @Test
+        fun returnsTwoOldest2() {
+          assertEquals(listOf(18, 83), twoOldestAges(listOf(6,5,83,5,3,18)))
+        }
+      }
+
+      // You can also use KotlinTest
+      //import io.kotlintest.matchers.shouldBe
+      //import io.kotlintest.specs.StringSpec
+      //
+      //class TestTwoOldestAges : StringSpec() {
+      //  init {
+      //    "twoOldestAges(listOf(1,5,87,45,8,8)) should be listOf(45, 87)" {
+      //      twoOldestAges(listOf(1,5,87,45,8,8)) shouldBe listOf(45, 87)
+      //    }
+      //    "twoOldestAges(listOf(6,5,83,5,3,18)) should be listOf(18, 83)" {
+      //      twoOldestAges(listOf(6,5,83,5,3,18)) shouldBe listOf(18, 83)
+      //    }
+      //  }
+      //}
+
+nasm:
+  default: fundamentals
+  fundamentals:
+    setup: |
+      section .text
+      global add
+      add:            ; int add(int a, int b)
+
+    answer: |
+      section .text
+      global add
+      add:            ; int add(int a, int b)
+        mov eax, edi  ; result = a
+        add eax, esi  ; result += b
+        ret
+
+    fixture: |
+      #include <criterion/criterion.h>
+      int add(int, int);
+      Test(add_test, should_add_integers) {
+        cr_assert_eq(add(1, 1), 2);
+      }
+fortran:
+  default: bug fixes
+  bug fixes:
+    setup: |
+      module Solution
+      implicit none
+      contains
+        function add(a, b)
+          integer(kind=4),intent(in)::a
+          integer(kind=4),intent(in)::b
+          integer(kind=4)::add
+          add = a * b
+        end function
+      end module
+
+    answer: |
+      module Solution
+      implicit none
+      contains
+        function add(a, b)
+          integer(kind=4),intent(in)::a
+          integer(kind=4),intent(in)::b
+          integer(kind=4)::add
+          add = a + b
+        end function
+      end module
+
+    fixture: |
+      program TestCases
+        use CW2
+        use Solution
+      implicit none
+        call describe("add")
+          call it("adds integers")
+            call assertEquals(2, add(1, 1))
+          call endContext()
+        call endContext()
+      end program
+
+purescript:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      module Example where
+
+      import Prelude
+
+      mul :: Int -> Int -> Int
+      mul a b = a + b
+
+    answer: |-
+      module Example where
+
+      import Prelude
+
+      mul :: Int -> Int -> Int
+      mul a b = a * b
+
+    fixture: |-
+      module ExampleSpec where
+
+      import Prelude
+      import Example (mul)
+
+      import Test.Spec (Spec, describe, it)
+      import Test.Spec.Assertions (shouldEqual)
+
+      spec :: Spec Unit
+      spec =
+        describe "Example" do
+          describe "mul" do
+            it "returns product" do
+              (mul 1 1) `shouldEqual` 1
+
+elm:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      module Example exposing (..)
+
+      mul : Int -> Int -> Int
+      mul x y = x + y
+
+    answer: |-
+      module Example exposing (..)
+
+      mul : Int -> Int -> Int
+      mul x y = x * y
+
+    fixture: |-
+      module ExampleTest exposing (..)
+
+      import Expect exposing (Expectation)
+      import Test exposing (..)
+
+      import Example
+
+      suite : Test
+      suite =
+        describe "Example"
+          [ test "mul" <|
+              \_ -> (Example.mul 1 1) |> Expect.equal 1
+          ]
+
+reason:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      let mul = (a, b) => a + b;
+
+    answer: |-
+      let mul = (a, b) => a * b;
+
+    fixture: |-
+      open Jest;
+
+      describe("mul", () => {
+        open Expect;
+        test("1 * 1", () =>
+          expect(Solution.mul(1, 1)) |> toBe(1));
+      });
+
+idris:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      module Solution
+
+      %access export
+      %default total
+
+      add : Int -> Int -> Int
+      add a b = a - b
+
+    answer: |-
+      module Solution
+
+      %access export
+      %default total
+
+      add : Int -> Int -> Int
+      add a b = a + b
+
+    fixture: |-
+      module SolutionSpec
+
+      import Specdris.Spec
+      import Solution
+
+      %access export
+      %default total
+
+      specSuite : IO ()
+      specSuite = spec $ do
+        describe "add" $ do
+          it "adds two ints" $ do
+            (1 `add` 1) `shouldBe` 2
+
+agda:
+  default: fundamentals
+  fundamentals:
+    setup: |-
+      {-# OPTIONS --safe #-}
+      module Example where
+      open import Agda.Builtin.Equality
+
+      _⇆_ : {A : Set} {a b c : A} → a ≡ b → b ≡ c → a ≡ c
+      a ⇆ b = ?
+
+    answer: |-
+      {-# OPTIONS --safe #-}
+      module Example where
+      open import Agda.Builtin.Equality
+
+      _⇆_ : {A : Set} {a b c : A} → a ≡ b → b ≡ c → a ≡ c
+      refl ⇆ refl = refl
+
+    fixture: |-
+      {-# OPTIONS --safe #-}
+      module Test where
+      open import Example
+
+      check : {A : Set} {a b c : A} → a ≡ b → b ≡ c → a ≡ c
+      check = _⇆_
+
+racket:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      #lang racket
+      (provide mul)
+
+      (define (mul a b) (+ a b))
+
+    answer: |-
+      #lang racket
+      (provide mul)
+
+      (define (mul a b) (* a b))
+
+    fixture: |-
+      #lang racket
+
+      (require "solution.rkt")
+      (require rackunit codewars/rackunit)
+
+      (run-tests
+        (test-suite
+         "example"
+         (test-case
+          "mul"
+          (check-equal? (mul 1 1) 1))))
+
+coq:
+  default: fundamentals
+  fundamentals:
+    setup: |-
+      Theorem eq_trans : forall a b c : Type,
+        a = b -> b = c -> a = c.
+      Proof.
+      Admitted.
+
+    answer: |-
+      Theorem eq_trans : forall a b c : Type,
+        a = b -> b = c -> a = c.
+      Proof.
+        intros a b c eq1 eq2.
+        rewrite -> eq1.
+        rewrite -> eq2.
+        reflexivity.
+      Qed.
+
+    fixture: |-
+      Require Solution.
+
+      Theorem eq_trans_test : forall a b c : Type,
+        a = b -> b = c -> a = c.
+      Proof.
+        exact Solution.eq_trans.
+      Qed.
+      Print Assumptions eq_trans_test.
+
+vb:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      Public Module Multiplier
+          Public Function Multiply(ByVal a As Integer, ByVal b As Integer) As Integer
+              Return a + b
+          End Function
+      End Module
+
+    answer: |-
+      Public Module Multiplier
+          Public Function Multiply(ByVal a As Integer, ByVal b As Integer) As Integer
+              Return a * b
+          End Function
+      End Module
+
+    fixture: |-
+      Imports NUnit.Framework
+
+      <TestFixture>
+      Public Class MultiplierTest
+          <Test>
+          Public Sub ShouldMultiplyInts()
+              Assert.AreEqual(1, Multiplier.Multiply(1, 1))
+          End Sub
+      End Class
+
+forth:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      : add ( u1|n1 u2|n2 -- u3|n3 )  * ;
+
+    answer: |-
+      : add ( u1|n1 u2|n2 -- u3|n3 )  + ;
+
+    fixture: |-
+      s" add" describe#{
+        s" returns sum" it#{
+          <{ 1 1 add -> 2 }>
+        }#
+      }#
+
+factor:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      USE: math
+      IN: example
+      : add ( a b -- a+b ) * ;
+
+    answer: |-
+      USE: math
+      IN: example
+      : add ( a b -- a+b ) + ;
+
+    fixture: |-
+      USING: example tools.testest ;
+      IN: exampe.tests
+
+      : run-tests ( -- )
+        "add" describe#{
+          "returns sum" it#{
+            <{ 1 1 add -> 2 }>
+          }#
+        }#
+      ;
+
+      MAIN: run-tests
+
+prolog:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      example_add(X,Y,Z) :- Z is X-Y.
+
+    answer: |-
+      example_add(X,Y,Z) :- Z is X+Y.
+
+    fixture: |-
+      :- begin_tests(example).
+      :- include(example).
+
+      test(add_returns_sum) :-
+         example_add(1, 1, Z),
+         assertion(Z == 2).
+
+      :- end_tests(example).
+
+cfml:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      component {
+        function add(a, b) {
+          return a - b;
+        }
+      }
+
+    answer: |-
+      component {
+        function add(a, b) {
+          return a + b;
+        }
+      }
+
+    fixture: |-
+      component extends="CodewarsBaseSpec" {
+        function beforeAll(){
+          SUT = createObject( 'Solution' );
+        }
+
+        function run(){
+          describe( "add(a, b)", function(){
+            it( 'returns sum', function(){
+              expect( SUT.add(1, 1) ).toBe( 2 );
+            });
+          });
+        }
+      }
+
+lean:
+  default: fundamentals
+  fundamentals:
+    package: |-
+      -- No axioms required in this Kata
+      def SUBMISSION := ∀ n m : ℕ, n + m = n + m
+      notation `SUBMISSION` := SUBMISSION -- to prevent cheating
+
+    setup: |-
+      import Preloaded
+      -- Task: prove that n + m = n + m
+      theorem immediate : ∀ n m : ℕ, n + m = n + m :=
+
+    answer: |-
+      import Preloaded
+      -- Task: prove that n + m = n + m
+      theorem immediate : ∀ n m : ℕ, n + m = n + m :=
+                            by intros; refl
+
+    fixture: |-
+      import Preloaded Solution
+      theorem submission : SUBMISSION := immediate
+      #print axioms submission
+
+cobol:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      123456*
+             identification division.
+             program-id. solution.
+
+             data division.
+             working-storage section.
+             linkage section.
+             01  arg1        pic s9(5).
+             01  arg2        pic s9(5).
+             01  result      pic s9(6).
+
+             procedure division using arg1 arg2 result.
+                 compute result = 0
+                 goback.
+             end program solution.
+
+    answer: |-
+      123456*
+             identification division.
+             program-id. solution.
+
+             data division.
+             working-storage section.
+             linkage section.
+             01  arg1        pic s9(5).
+             01  arg2        pic s9(5).
+             01  result      pic s9(6).
+
+             procedure division using arg1 arg2 result.
+                 compute result = arg1 + arg2
+                 goback.
+             end program solution.
+
+    fixture: |-
+      123456*8901
+            * See https://github.com/codewars/cobol-test
+             identification division.
+             program-id. tests.
+
+             data division.
+             working-storage section.
+             01  arg1        pic s9(5).
+             01  arg2        pic s9(5).
+             01  arg1-str    pic -9(5).
+             01  arg2-str    pic -9(5).
+             01  result      pic s9(6).
+             01  expected    pic s9(6).
+
+             procedure division.
+            * Fixed Tests
+                 testsuite 'Fixed Tests'.
+                 testcase 'Test 1'.
+                 move 3 to arg1
+                 move -5 to arg2
+                 call 'solution' using
+                     by content arg1 arg2
+                     by reference result
+                 expect result to be -2.0.
+
+            * Random Tests
+                 testsuite "Random Tests".
+                 perform set-random-seed
+                 perform 5 times
+                     compute arg1 = function random() * 199999 - 99999
+                     compute arg2 = function random() * 199999 - 99999
+                     move arg1 to arg1-str
+                     move arg2 to arg2-str
+                     testcase 'Testing ' arg1-str ' + ' arg2-str.
+                     add arg1 to arg2 giving expected
+                     call 'solution' using
+                         by content arg1 arg2
+                         by reference result
+                     expect result to be expected.
+                 end-perform
+
+                 end tests.
+
+             end program tests.
+
+haxe:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      class Example {
+        static public function add(a:Int, b:Int):Int {
+          return a - b;
+        }
+      }
+
+    answer: |-
+      class Example {
+        static public function add(a:Int, b:Int):Int {
+          return a + b;
+        }
+      }
+
+    fixture: |-
+      import utest.Assert;
+      import Solution;
+
+      class SolutionTest extends utest.Test {
+        function testExample() {
+          Assert.equals(2, Example.add(1, 1));
+        }
+      }
+
+commonlisp:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      (in-package #:cl-user)
+      (defpackage #:challenge/solution
+        (:use #:cl)
+        (:export #:add))
+      (in-package #:challenge/solution)
+
+      (defun add (a b) (- a b))
+
+    answer: |-
+      (in-package #:cl-user)
+      (defpackage #:challenge/solution
+        (:use #:cl)
+        (:export #:add))
+      (in-package #:challenge/solution)
+
+      (defun add (a b) (+ a b))
+
+    fixture: |-
+      (in-package #:cl-user)
+      (defpackage #:challenge/tests/solution
+        (:use #:cl
+              #:rove
+              #:challenge/solution))
+      (in-package #:challenge/tests/solution)
+      ; Solution can be imported from `challenge/solution`.
+      ; Optional preloaded package (`challenge/preloaded`) can be provided by kata authors.
+
+      ; Write tests with Rove (https://github.com/fukamachi/rove).
+      ; The use of `testing` is recommended for better output on Codewars.
+      (deftest test-solution
+        (testing "add"
+          (ok (= (add 1 1) 2))))
+
+raku:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      use v6;
+      unit module Solution;
+      sub add($a, $b) is export {
+        $a - $b;
+      }
+
+    answer: |-
+      use v6;
+      unit module Solution;
+      sub add($a, $b) is export {
+        $a + $b;
+      }
+
+    fixture: |-
+      use v6;
+      use Test;
+      use Solution;
+
+      subtest "test add", {
+        is(add(1, 1), 2, "1 + 1");
+      }
+      done-testing;
+
+perl:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      package Solution;
+
+      use 5.006;
+      use strict;
+      use warnings;
+
+      our @EXPORT = qw(add);
+
+      sub add {
+          my $a = shift;
+          my $b = shift;
+          return $a - $b;
+      }
+
+      1;
+
+    answer: |-
+      package Solution;
+
+      use 5.006;
+      use strict;
+      use warnings;
+
+      our @EXPORT = qw(add);
+
+      sub add {
+          my $a = shift;
+          my $b = shift;
+          return $a + $b;
+      }
+
+      1;
+
+    fixture: |-
+      use Test::Most;
+      use Solution;
+
+      subtest "add" => sub {
+        is(Solution::add(1, 1), 2);
+      };
+
+      done_testing();
+
+pascal:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      unit Example;
+
+      {$mode objfpc}{$H+}
+
+      interface
+      function Add(const A: Integer; const B: Integer): Integer;
+
+      implementation
+
+      function Add(const A: Integer; const B: Integer): Integer;
+      begin
+        Result := A - B;
+      end;
+      end.
+
+    answer: |-
+      unit Example;
+
+      {$mode objfpc}{$H+}
+
+      interface
+      function Add(const A: Integer; const B: Integer): Integer;
+
+      implementation
+
+      function Add(const A: Integer; const B: Integer): Integer;
+      begin
+        Result := A + B;
+      end;
+      end.
+
+    fixture: |-
+      unit ExampleTests;
+      // Tests are written with [FPTest](https://github.com/graemeg/fptest).
+
+      {$mode objfpc}{$H+}
+
+      interface
+
+      uses
+        TestFramework,
+        Example;
+
+      type TExampleTests = class(TTestCase)
+        published
+          procedure TestAdd;
+      end;
+
+      procedure RegisterTests;
+
+      implementation
+
+      procedure RegisterTests;
+      begin
+        TestFramework.RegisterTest(TExampleTests.Suite);
+      end;
+
+      procedure TExampleTests.TestAdd;
+      begin
+        CheckEquals(2, Add(1, 1));
+      end;
+      end.
+
+d:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      module solution;
+
+      export int add(int a, int b) {
+          return a - b;
+      }
+
+    answer: |-
+      module solution;
+
+      export int add(int a, int b) {
+          return a + b;
+      }
+
+    fixture: |-
+      module solution_test;
+
+      import solution : add;
+
+      version(unittest) import fluent.asserts;
+
+      @("add returns the sum")
+      unittest {
+          add(1, 1).should.equal(2).because("1 + 1 == 2");
+          assert(add(1, 1) == 2);
+      }
+
+lambdacalc:
+  default: bug fixes
+  bug fixes:
+    setup: |-
+      multiply = \ m n . n (m s) z
+
+    answer: |-
+      multiply = \ m n s z . n (m s) z
+
+    fixture: |-
+      import { assert, LC, getSolution } from "./lc-test.js";
+
+      LC.configure({ purity: "LetRec", numEncoding: "Church", verbosity: "Concise" });
+      const { multiply } = LC.compile(getSolution());
+
+      describe("Multiply", () => {
+        it("example tests",() => {
+          assert.numEql( multiply(7)(7), 49 );
+          assert.numEql( multiply(11)(11), 121 );
+        });
+      });
+
+riscv:
+  default: bug fixes
+  bug fixes:
+    setup: |
+      .globl multiply
+      multiply:
+        mulw a1, a0, a1
+
+    answer: |
+      .globl multiply
+      multiply:
+        mulw a0, a0, a1
+        ret
+
+    fixture: |
+      #include <stdlib.h>
+      #include <time.h>
+      #include <stddef.h>
+      #include <cgreen/cgreen.h>
+
+      int multiply(int, int);
+
+      Describe(Multiply);
+      BeforeEach(Multiply) {}
+      AfterEach(Multiply) {}
+
+      Ensure(Multiply, works_for_some_fixed_tests) {
+        assert_that(multiply(3, 5), is_equal_to(15));
+        assert_that(multiply(5, 3), is_equal_to(15));
+        assert_that(multiply(2, 2), is_equal_to(4));
+        assert_that(multiply(-9, 7), is_equal_to(-63));
+        assert_that(multiply(8, -11), is_equal_to(-88));
+        assert_that(multiply(-15, -12), is_equal_to(180));
+      }
+
+      Ensure(Multiply, works_for_100_random_tests) {
+        srand(time(NULL));
+        for (int i = 0; i < 100; ++i) {
+          int a = rand() % 100;
+          int b = rand() % 100;
+          int expected = a * b;
+          assert_that(multiply(a, b), is_equal_to(expected));
+        }
+      }
+
+      TestSuite *solution_tests() {
+        TestSuite *suite = create_test_suite();
+        add_test_with_context(suite, Multiply, works_for_some_fixed_tests);
+        add_test_with_context(suite, Multiply, works_for_100_random_tests);
+        return suite;
+      }

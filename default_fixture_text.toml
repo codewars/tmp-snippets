@@ -1,0 +1,906 @@
+agda = """
+{-# OPTIONS --safe #-}
+module Test where
+
+open import Example
+
+check : {A : Set} {a b c : A} → a ≡ b → b ≡ c → a ≡ c
+check = _⇆_
+"""
+
+bf = """
+// You can use the Mocha (JavaScript) framework for testing BF.
+// TODO: replace with your own tests (TDD), these are just here to demonstrate usage.
+
+describe("Your Test Suite", function () {
+  it("should return Hello World!", function () {
+    // use runBF() to run your program, you can pass it arguments
+    Test.assertEquals(runBF(), "Hello World!");
+  });
+});
+"""
+
+c = """
+// TODO: Replace examples and use TDD by writing your own tests. The code provided here is just a how-to example.
+
+#include <criterion/criterion.h>
+
+// replace with the actual method being tested
+int foo(int,int);
+
+Test(the_multiply_function, should_pass_all_the_tests_provided) {
+    cr_assert_eq(foo(1, 1), 1);
+}
+"""
+
+cfml = """
+// https://testbox.ortusbooks.com/
+component extends="CodewarsBaseSpec" {
+    // Submitted solution is written to Solution.cfc
+    function beforeAll(){
+        SUT = createObject( 'Solution' );
+    }
+
+    function run(){
+        describe( "Example", function(){
+            it( "returns sum", function(){
+                expect( SUT.add(1, 1) ).toBe( 2 );
+            });
+        });
+    }
+}
+"""
+
+clojure = """
+;; TODO: TDD using clojure.test framework
+"""
+
+cobol = """
+123456*8901
+      * See https://github.com/codewars/cobol-test
+       identification division.
+       program-id. tests.
+
+       data division.
+       working-storage section.
+       01  arg1        pic s9(5).
+       01  arg2        pic s9(5).
+       01  arg1-str    pic -9(5).
+       01  arg2-str    pic -9(5).
+       01  result      pic s9(6).
+       01  expected    pic s9(6).
+
+       procedure division.
+      * Fixed Tests
+           testsuite 'Fixed Tests'.
+           testcase 'Test 1'.
+           move 3 to arg1
+           move -5 to arg2
+           call 'solution' using
+               by content arg1 arg2
+               by reference result
+           expect result to be -2.0.
+
+      * Random Tests
+           testsuite "Random Tests".
+           perform set-random-seed
+           perform 5 times
+               compute arg1 = function random() * 199999 - 99999
+               compute arg2 = function random() * 199999 - 99999
+               move arg1 to arg1-str
+               move arg2 to arg2-str
+               testcase 'Testing ' arg1-str ' + ' arg2-str.
+               add arg1 to arg2 giving expected
+               call 'solution' using
+                   by content arg1 arg2
+                   by reference result
+               expect result to be expected.
+           end-perform
+
+           end tests.
+
+       end program tests.
+"""
+
+coffeescript = """
+# Create your own tests here. These are some of the methods available:
+#  Test.expect(boolean, [optional] message)
+#  Test.assertEquals(actual, expected, [optional] message)
+#  Test.assertSimilar(actual, expected, [optional] message)
+#  Test.assertNotEquals(actual, expected, [optional] message)
+"""
+
+commonlisp = """
+(in-package #:cl-user)
+(defpackage #:challenge/tests/solution
+  (:use #:cl
+        #:rove
+        #:challenge/solution))
+(in-package #:challenge/tests/solution)
+; Solution can be imported from `challenge/solution`.
+; Optional preloaded package (`challenge/preloaded`) can be provided by kata authors.
+
+; Write tests with Rove (https://github.com/fukamachi/rove).
+; The use of `testing` is recommended for better output on Codewars.
+(deftest test-solution
+  (testing "add"
+    (ok (= (add 1 1) 2))))
+"""
+
+coq = """
+Require Solution.
+Require Import Preloaded.
+From CW Require Import Loader.
+
+CWGroup "Solution.example".
+  CWTest "should have the correct type".
+    CWAssert Solution.example : (forall (A : Type) (a b c : A),
+      a = b -> b = c -> a = c).
+  CWTest "should be closed under the global context".
+    CWAssert Solution.example Assumes.
+CWEndGroup.
+"""
+
+cpp = """
+// TODO: Replace examples and use TDD by writing your own tests
+
+Describe(any_group_name_you_want)
+{
+    It(should_do_something)
+    {
+        Assert::That("some value", Equals("another value"));
+    }
+};
+"""
+
+crystal = """
+# Spec example:
+# TODO: replace with your own tests (TDD), these are just how-to examples.
+
+describe "Solution" do
+  it "should test something" do
+     foo.should eq "bar"
+  end
+end
+"""
+
+csharp = """
+namespace Solution {
+  using NUnit.Framework;
+  using System;
+
+  // TODO: Replace examples and use TDD by writing your own tests
+
+  [TestFixture]
+  public class SolutionTest
+  {
+    [Test]
+    public void MyTest()
+    {
+      Assert.AreEqual("expected", "actual");
+    }
+  }
+}
+"""
+
+d = """
+module solution_test;
+
+import solution : add;
+
+// fluent asserts is supported
+version(unittest) import fluent.asserts;
+
+// Name the unittest block
+@("add returns the sum")
+unittest {
+    add(1, 1).should.equal(2).because("1 + 1 == 2");
+    assert(add(1, 1) == 2);
+}
+"""
+
+dart = """
+// See https://pub.dartlang.org/packages/test
+import "package:test/test.dart";
+import "package:solution/solution.dart";
+
+void main() {
+  test("add", () {
+    expect(add(1, 1), equals(2));
+  });
+}
+"""
+
+elixir = """
+# TODO: Replace examples and use TDD by writing your own tests
+
+defmodule TestSolution do
+  use ExUnit.Case
+
+  test "some test description" do
+    assert "actual" == "expected"
+  end
+end
+"""
+
+elm = """
+module ExampleTest exposing (..)
+-- Codewars uses [elm-test](https://package.elm-lang.org/packages/elm-explorations/test/1.1.0).
+-- Replace this with your own tests.
+
+import Expect exposing (Expectation)
+import Test exposing (..)
+
+import Example
+
+suite : Test
+suite =
+  describe "Example"
+    [ test "add" <|
+      \\_ -> (Example.add 1 1) |> Expect.equal 2
+    ]
+"""
+
+erlang = """
+% Test using EUnit (http://erlang.org/doc/apps/eunit/chapter.html)
+% TODO: replace with your own tests (TDD), these are just here to demonstrate usage.
+-module(example_tests).
+-include_lib("eunit/include/eunit.hrl").
+
+example_test_() ->
+  {"Two Oldest Ages",
+    [{"returns [45, 87] for [1,5,87,45,8,8]", ?_assertMatch([45, 87], [45])}]}.
+"""
+
+factor = """
+! Use vocabulary tools.testest for testing.
+! See https://github.com/codewars/testest
+
+USING: example tools.testest ;
+IN: example.tests
+
+: run-tests ( -- )
+  "Example" describe#{
+    "test case" it#{
+      <{ 1 1 example ->  1 }>
+    }#
+  }#
+;
+
+MAIN: run-tests
+"""
+
+forth = """
+\\ ttester.fs with extension for Codewars
+\\ See https://github.com/codewars/ttester-codewars
+
+s" example" describe#{
+  s" returns sum" it#{
+    <{ 1 1 example -> 2 }>
+  }#
+}#
+"""
+
+fortran = """
+! CW2 example
+program TestCases
+  use CW2
+  use Solution
+implicit none
+  call describe("add")
+    call it("adds integers")
+      call assertEquals(2, add(1, 1))
+    call endContext()
+  call endContext()
+end program
+"""
+
+fsharp = """
+module ExampleTests
+
+open ExampleSolution
+// NUnit is used to test F# 6.0.
+open NUnit.Framework
+
+[<Test>]
+let TestAdd() =
+    Assert.AreEqual(2, add 1 1)
+
+[<TestFixture>]
+type FixedTests() =
+    [<Test>]
+    member this.TestOne() =
+        Assert.AreEqual(1, add 0 1)
+"""
+
+go = """
+// TODO: replace with your own tests (TDD). An example to get you started is included below.
+// Ginkgo BDD Testing Framework <http://onsi.github.io/ginkgo/>
+// Gomega Matcher Library <http://onsi.github.io/gomega/>
+
+package kata_test
+import (
+  . "github.com/onsi/ginkgo"
+  . "github.com/onsi/gomega"
+  . "codewarrior/kata"
+)
+var _ = Describe("Test Example", func() {
+//   It("should test that the solution returns the correct value", func() {
+//     Expect(Solution(1)).To(Equal(2))
+//   })
+})
+"""
+
+groovy = """
+// You can test using JUnit or Spock. JUnit is shown below
+// TODO: replace this example test with your own, this is just here to demonstrate usage.
+import org.junit.Test
+
+class TestExample {
+  @Test
+  void returnsProduct() {
+    assert Example.multiply(2, 2) == 4
+  }
+}
+"""
+
+haskell = """
+module ExampleSpec where
+-- Tests can be written using Hspec http://hspec.github.io/
+-- Replace this with your own tests.
+
+import Test.Hspec
+import Example
+
+-- `spec` of type `Spec` must exist
+spec :: Spec
+spec = do
+    describe "add" $ do
+        it "adds Nums" $ do
+            (add 1 1) `shouldBe` (2 :: Integer)
+
+"""
+
+haxe = """
+// Tests are written using https://github.com/haxe-utest/utest
+import utest.Assert;
+import Solution;
+
+class SolutionTest extends utest.Test {
+  function testExample() {
+    Assert.equals(2, Example.add(1, 1));
+  }
+}
+"""
+
+idris = """
+module ExampleSpec
+-- Tests can be written using [specdris](https://github.com/pheymann/specdris)
+-- `specSuite : IO ()` is required.
+
+import Specdris.Spec
+import Example
+
+%access export
+%default total
+
+specSuite : IO ()
+specSuite = spec $ do
+  describe "add" $ do
+    it "adds two natural numbers" $ do
+      (1 `add` 1) `shouldBe` 2
+"""
+
+java = """
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+// TODO: Replace examples and use TDD by writing your own tests
+
+class SolutionTest {
+    @Test
+    void testSomething() {
+        // assertEquals("expected", "actual");
+    }
+}
+"""
+
+javascript = """
+// Since Node 10, we're using Mocha.
+// You can use `chai` for assertions.
+const chai = require("chai");
+const assert = chai.assert;
+// Uncomment the following line to disable truncating failure messages for deep equals, do:
+// chai.config.truncateThreshold = 0;
+// Since Node 12, we no longer include assertions from our deprecated custom test framework by default.
+// Uncomment the following to use the old assertions:
+// const Test = require("@codewars/test-compat");
+
+describe("Solution", function() {
+  it("should test for something", function() {
+    // Test.assertEquals(1 + 1, 2);
+    // assert.strictEqual(1 + 1, 2);
+  });
+});
+"""
+
+julia = """
+# FactCheck example:
+# TODO: replace with your own tests (TDD), these are just how-to examples.
+using FactCheck
+facts("Testing basics") do
+  @fact 1 --> 1
+  @fact 2*2 --> 4
+  @fact uppercase("foo") --> "FOO"
+  @fact 2*[1,2,3] --> [2,4,6]
+end
+"""
+
+kotlin = """
+// You can test using JUnit or KotlinTest. JUnit is shown below
+// TODO: replace this example test with your own, this is just here to demonstrate usage.
+
+// TODO: replace with whatever your package is called
+package solution
+
+import kotlin.test.assertEquals
+import org.junit.Test
+
+class TestExample {
+  @Test
+  fun multiply() {
+    assertEquals(4, multiply(2, 2))
+  }
+}
+"""
+
+lambdacalc = """
+import { assert, LC, getSolution } from "./lc-test.js";
+
+LC.configure({ purity: "Let", numEncoding: "Church", verbosity: "Concise" });
+const { multiply } = LC.compile(getSolution());
+
+describe("Multiply", () => {
+  it("example tests", () => {
+    assert.numEql( multiply(7)(7), 49 );
+    assert.numEql( multiply(11)(11), 121 );
+  });
+});
+"""
+
+lean = """
+import Preloaded Solution
+
+theorem submission : SUBMISSION := immediate
+#print axioms submission
+"""
+
+lua = """
+-- TODO: Replace examples and use TDD by writing your own tests
+local solution = require 'solution'
+describe("solution", function()
+  it("test for something", function()
+    assert.are.same("expected", solution.foo())
+  end)
+end)
+"""
+
+nasm = """
+; this is just an example. See https://docs.codewars.com/languages/nasm
+#include <criterion/criterion.h>
+int add(int, int);
+Test(add_test, should_add_integers) {
+  cr_assert_eq(add(1, 1), 2);
+}
+"""
+
+objc = """
+// TODO: replace with your own tests, these are just how-to examples.
+// Codewars uses UnitKit unit testing framework.
+// See https://docs.codewars.com/languages/objc/unitkit
+@implementation TestSuite
+- (void) testsIfReturnsActual
+{
+  UKStringsEqual(@"expected", Solution(@"value"));
+  UKStringsNotEqual(@"expected", Solution(@"value"));
+}
+@end
+"""
+
+ocaml = """
+(* TODO: replace with your own tests, these are just how-to examples.
+ * OUnit Spec example:
+ * See http://ounit.forge.ocamlcore.org/api-ounit-2.0.0 for documentation
+ *)
+
+module Tests = struct
+    open OUnit
+    let suite = [
+        "Suite Name" >:::
+            [
+                "Test Name" >:: (fun _ ->
+                    assert_equal "Expected" "Actual"
+                )
+            ]
+        ]
+    ;;
+end
+"""
+
+pascal = """
+unit ExampleTests;
+// Tests are written with [FPTest](https://github.com/graemeg/fptest).
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  TestFramework,
+  Example;
+
+type TExampleTests = class(TTestCase)
+  published
+    procedure TestAdd;
+end;
+
+procedure RegisterTests;
+
+implementation
+
+procedure RegisterTests;
+begin
+  TestFramework.RegisterTest(TExampleTests.Suite);
+end;
+
+procedure TExampleTests.TestAdd;
+begin
+  CheckEquals(2, Add(1, 1));
+end;
+end.
+"""
+
+perl = """
+# You can use `Test::More` to write tests.
+# https://metacpan.org/pod/Test::More
+# use strict;
+# use warnings;
+# use Test::More;
+# `Test::Most` can be used to load commonly needed features.
+# See https://metacpan.org/pod/Test::Most
+use Test::Most;
+
+# The name of the solution package is inferred from the code.
+use Solution;
+
+subtest "examples" => sub {
+  is(Solution::add(1, 1), 2);
+};
+
+done_testing();
+"""
+
+php = """
+<?php
+use PHPUnit\\Framework\\TestCase;
+
+// PHPUnit Test Examples:
+// TODO: Replace examples and use TDD by writing your own tests
+class ExampleTest extends TestCase
+{
+    // test function names should start with "test"
+    public function testThatSomethingShouldHappen() {
+      $this->assertEquals("a", "a");
+      $this->assertEquals([0], [0]);
+    }
+}
+"""
+
+powershell = """
+# You can test with Pester (https://github.com/pester/Pester)
+# TODO: replace with your own tests (TDD), these are just here to demonstrate usage.
+BeforeAll {
+  . $PSCommandPath.Replace('.Tests.ps1', '.ps1')
+}
+
+Describe "Add-Numbers" {
+  It "adds positive numbers" {
+    Add-Numbers 1 1 | Should -Be 2
+  }
+}
+"""
+
+prolog = """
+% plunit can be used to test solution
+:- begin_tests(example).
+:- include(example).
+
+test(example_test) :-
+        X is 1+1,
+        assertion(X == 2).
+
+:- end_tests(example).
+"""
+
+purescript = """
+module ExampleSpec where
+-- Tests can be written using spec https://purescript-spec.github.io/purescript-spec
+-- Replace this with your own tests.
+
+import Prelude
+
+import Test.Spec (Spec, describe, it)
+import Test.Spec.Assertions (shouldEqual)
+
+import Example (add')
+
+spec :: Spec Unit
+spec =
+  describe "Example" do
+    describe "add'" do
+      it "returns sum" do
+        (add' 1 1) `shouldEqual` 2
+"""
+
+python = """
+import codewars_test as test
+# TODO Write tests
+import solution # or from solution import example
+
+# test.assert_equals(actual, expected, [optional] message)
+@test.describe("Example")
+def test_group():
+    @test.it("test case")
+    def test_case():
+        test.assert_equals(1 + 1, 2)
+"""
+
+r = """
+# You can test with testthat (http://r-pkgs.had.co.nz/tests.html#test-structure)
+# TODO: replace with your own tests (TDD), these are just here to demonstrate usage.
+
+test_that("example", {
+  expect_equal(actual, expected)
+})
+"""
+
+racket = """
+#lang racket
+(require "solution.rkt")
+(require rackunit
+         codewars/rackunit)
+
+;; codewars/rackunit provides `run-tests`.
+;; See RackUnit documentation. https://docs.racket-lang.org/rackunit
+(run-tests
+  (test-suite
+   "example"
+   (test-case
+    "add"
+    (check-equal? (add 1 1) 2))))
+"""
+
+raku = """
+use v6;
+# You can write tests using the standard Test module.
+# https://docs.raku.org/language/testing
+use Test;
+# The name of the solution module is inferred from the code.
+use Solution;
+
+subtest "examples", {
+    is(add(1, 1), 2);
+}
+done-testing;
+"""
+
+reason = """
+/* You can write tests using Jest.
+ * See https://github.com/glennsl/bs-jest
+ * Replace with your own tests.
+ */
+open Jest;
+
+describe("add", () => {
+  open Expect;
+  test("1 + 1", () =>
+    expect(Solution.add(1, 1)) |> toBe(2));
+});
+"""
+
+riscv = """
+// Tests for RISC-V are written in C with Cgreen.
+// See <https://cgreen-devs.github.io/cgreen/cgreen-guide-en.html>.
+#include <cgreen/cgreen.h>
+#include <stdlib.h>
+#include <time.h>
+#include <stddef.h>
+
+int add(int, int);
+
+// `Describe`, `BeforeEach`, and `AfterEach` are required.
+Describe(Example);
+BeforeEach(Example) {}
+AfterEach(Example) {}
+
+Ensure(Example, works_for_fixed_tests) {
+  assert_that(add(1, 1), is_equal_to(2));
+}
+
+Ensure(Example, works_for_100_random_tests) {
+  srand(time(NULL));
+  for (int i = 0; i < 100; ++i) {
+    int a = rand() % 100;
+    int b = rand() % 100;
+    int expected = a + b;
+    assert_equal_with_message(add(a, b), expected, "add(%d, %d) == %d", a, b, expected);
+  }
+}
+
+// `solution_tests` to create a test suite is required.
+TestSuite *solution_tests() {
+  TestSuite *suite = create_test_suite();
+  add_test_with_context(suite, Example, works_for_fixed_tests);
+  add_test_with_context(suite, Example, works_for_100_random_tests);
+  return suite;
+}
+"""
+
+ruby = """
+# From Ruby 3.0, RSpec is used under the hood.
+# See https://rspec.info/
+# Defaults to the global `describe` for backwards compatibility, but `RSpec.desribe` works as well.
+describe "Example" do
+  it "should return the sum" do
+    expect(add(1, 1)).to eq(2)
+    # The following is still supported, but new tests should now use them.
+    # Test.assert_equals(add(1, 1), 2)
+  end
+end
+"""
+
+rust = """
+// Add your tests here.
+// See https://doc.rust-lang.org/stable/rust-by-example/testing/unit_testing.html
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_add() {
+        assert_eq!(add(1, 2), 3);
+    }
+}
+"""
+
+scala = """
+// You can test using ScalaTest (http://www.scalatest.org/).
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
+
+// TODO: replace this example test with your own, this is just here to demonstrate usage.
+// See http://www.scalatest.org/ to learn more.
+class ExampleSpec extends AnyFlatSpec with Matchers {
+  "multiply(2, 2)" should "return 4" in {
+    Example.multiply(2, 2) should be (4)
+  }
+}
+"""
+
+shell = """
+# TODO: replace with your own tests (TDD). An example to get you started is included below.
+
+# run the solution and store its result
+# output = run_shell args: ['my_arg']
+
+# describe "Solution" do
+#   it "should return the argument passed in" do
+#     expect(output).to include('my_arg')
+#   end
+# end
+"""
+
+solidity = """
+// See https://hardhat.org/tutorial/testing-contracts
+const { expect } = require("chai");
+
+describe("Token contract", function () {
+  it("Deployment should assign the total supply of tokens to the owner", async function () {
+    const [owner] = await ethers.getSigners();
+
+    const Token = await ethers.getContractFactory("Token");
+    const token = await Token.deploy();
+    const ownerBalance = await token.balanceOf(owner.address);
+    expect(await token.totalSupply()).to.equal(ownerBalance);
+  });
+});
+"""
+
+sql = """
+# TODO: replace with your own tests (TDD), these are just how-to examples to get you started.
+
+# Ruby/Rspec/Sequel Example:
+# While the code section is pure SQL, for testing we use Ruby & Rspec.
+# Sequel (https://github.com/jeremyevans/sequel) is used to setup the database and run queries.
+# The connection is already made for you, use DB to access.
+
+DB.create_table :items do
+  primary_key :id
+  String :name
+  Float :price
+end
+
+items = DB[:items] # Create a dataset
+
+# Populate the table
+items.insert(:name => 'a', :price => 10)
+items.insert(:name => 'b', :price => 35)
+items.insert(:name => 'c', :price => 20)
+
+# calling run_sql will print the results and return them so that you can test data within them.
+# if you want to test different sets of data, then its best to move this code into its own top level describe
+# block. If you are only testing one set though, its better to set the results before you enter a describe block
+# so that the results are presented at the top of the output.
+results = run_sql
+
+describe :items do
+   it "should return 3 items" do
+    expect(results.count).to eq 3
+   end
+end
+
+# Other tips about using run_sql:
+# The SQL/code section supports multiple statements, seperated of course by a ";".
+# When multiple SELECT statements are issued:
+#    run_sql will return an array of arrays, unless only one SELECT statement returned results
+#    INSERT and UPDATE results will not be included in the list
+#    SELECT statements that return no results will not be included in the list
+"""
+
+swift = """
+import XCTest
+// XCTest Spec Example:
+// TODO: replace with your own tests (TDD), these are just how-to examples to get you started
+
+class SolutionTest: XCTestCase {
+    static var allTests = [
+        ("Test Example", testExample),
+    ]
+
+    func testExample() {
+        let actual = 1
+        XCTAssertEqual(actual, 1)
+    }
+}
+
+XCTMain([
+    testCase(SolutionTest.allTests)
+])
+"""
+
+typescript = """
+// See https://www.chaijs.com for how to use Chai.
+import { assert } from "chai";
+
+import { example } from "./solution";
+
+// TODO Add your tests here
+describe("example", function() {
+  it("test", function() {
+    // assert.strictEqual(1 + 1, 2);
+  });
+});
+"""
+
+vb = """
+Imports NUnit.Framework
+
+<TestFixture>
+Public Class AdderTest
+    <Test>
+    Public Sub ShouldAddInts()
+        Assert.AreEqual(2, Adder.Add(1, 1))
+    End Sub
+End Class
+"""
