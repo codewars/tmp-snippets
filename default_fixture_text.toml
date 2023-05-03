@@ -510,21 +510,20 @@ objc = """
 ocaml = """
 (* TODO: replace with your own tests, these are just how-to examples.
  * OUnit Spec example:
- * See http://ounit.forge.ocamlcore.org/api-ounit-2.0.0 for documentation
+ * See https://ocaml.org/p/ounit2/2.2.3/doc/index.html for documentation
+ * Available packages: https://docs.codewars.com/languages/ocaml
  *)
 
-module Tests = struct
-    open OUnit
-    let suite = [
-        "Suite Name" >:::
-            [
-                "Test Name" >:: (fun _ ->
-                    assert_equal "Expected" "Actual"
-                )
-            ]
+open Solution
+open OUnit
+let suite = [
+    "Suite Name" >:::
+        [
+            "Test Name" >:: (fun _ ->
+                assert_equal "Expected" "Actual" ~printer:Fun.id ~msg:"test"
+            )
         ]
-    ;;
-end
+    ]
 """
 
 pascal = """

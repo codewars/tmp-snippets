@@ -1043,31 +1043,36 @@ ocaml:
   default: reference
   reference:
     setup: |-
-        module Person = struct
-            type t = { name: string }
-            let greet (person: t) = (* TODO: write a greeter *)
-        end
+        let is_even (n: int) = false (* TODO: return true if the number is even *)
+        let is_odd (n: int) = false (* TODO: return true if the number is odd *)
 
     answer: |-
-        module Person = struct
-            type t = { name: string }
-            let greet (person: t) = "Hello, " ^ person.name ^ "!"
-        end
+        let is_even (n: int) = n mod 2 = 0
+        let is_odd (n: int) = n land 1 <> 0
 
     fixture: |-
-        module Tests = struct
-            open OUnit
-            let suite = [
-                "Person module" >:::
-                    [
-                        "test_greet" >:: (fun _ ->
-                            let person : Person.t = { Person.name = "Jack" } in
-                            assert_equal "Hello, Jack!" (Person.greet person)
-                        )
-                    ]
-                ]
-            ;;
-        end
+        open OUnit
+        let suite = [
+            "is_even tests" >:::
+                [
+                    "is_even 0" >:: (fun _ -> 
+                        assert_equal true (Solution.is_even 0) ~printer:string_of_bool ~msg:"n = 0"
+                    );
+                    "is_even 1" >:: (fun _ ->
+                        assert_equal false (Solution.is_even 1) ~printer:string_of_bool ~msg:"n = 1"
+                    );
+                ];
+
+            "is_odd tests" >:::
+                [
+                    "is_odd 0" >:: (fun _ -> 
+                        assert_equal false (Solution.is_odd 0) ~printer:string_of_bool ~msg:"n = 0"
+                    );
+                    "is_even 3" >:: (fun _ ->
+                        assert_equal true (Solution.is_odd 3) ~printer:string_of_bool ~msg:"n = 3"
+                    );
+                ];
+            ]
 
 swift:
   default: reference
